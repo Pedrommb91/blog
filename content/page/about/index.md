@@ -3,9 +3,12 @@ title: "About Me"
 description: "A bit about my professional journey"
 date: 2024-06-06
 slug: "about"
+layout: "about"
 menu:
-    about:
-        weight: 2
+    main: 
+        weight: -80
+        params:
+            icon: user
 ---
 
 ## About Me
