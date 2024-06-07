@@ -3,5 +3,4 @@
 /resources/_gen/
 /assets/jsconfig.json
 hugo_stats.json
-hugo-theme-stack
 .hugo_build.lock
