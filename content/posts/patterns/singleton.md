@@ -3,7 +3,7 @@ author: 'Pedro Barreiro'
 title: 'Singleton'
 date: 2024-06-07
 draft: false
-tags: ["golang", "go", "Design patterns", "singleton"]
+tags: ["golang", "go", "Design patterns", "singleton", "creational pattern"]
 categories: ["Golang", "Design patterns"]
 series: ["Design Patterns"]
 ---
