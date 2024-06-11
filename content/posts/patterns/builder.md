@@ -8,13 +8,22 @@ categories: ["Golang", "Design patterns"]
 series: ["Design Patterns"]
 ---
 
-# Understanding the Builder Pattern in Go
+# Builder Pattern in Go
 
-The Builder pattern is a design pattern that provides a flexible solution to object creation problems. It is used when the construction process of an object is complex. In Go, we can implement the Builder pattern by creating a separate Builder type that is responsible for incrementally building the object.
+The *Builder* pattern aims to improve readability and simplify complex structure initialization providing a set of functions to populate all the required fields, and then return the product as a result. It allows for a simple approach only creating the builder and setting all inputs to build the product or creating several builders with default values.
 
-## Implementing a simple Builder in Go
+## Simple approach
 
-Let's start with a simple example where we use a SimpleBuilder struct to construct a SimpleProduct object.
+The base concept of the *Builder* pattern is to create and populate a struct with readability in mind, so that would be great if we could populate a struct with dozens of fields with nested functions and then return the expected result, this is exactly that this pattern does. So with the ideal scenario set, we want to implement the code so we can write the following code:
+
+```go
+product := builder.NewSimpleBuilder().
+    SetName("Product").
+    SetValue(100).
+    Build()
+```
+
+To achieve this goal we need to implement a *Builder* of a `SimpleProduct` with a `name` and `value` fields. The builder implements functions to populate the fields and one function to return the final result. Check the following code as an abstract example:
 
 ```go
 type SimpleProduct struct {
@@ -47,21 +56,18 @@ func (b *SimpleBuilder) Build() SimpleProduct {
 }
 ```
 
+## Advanced Builder
 
-In this example, `NewSimpleBuilder` is a factory function that returns a new instance of `SimpleBuilder`. The `SetName` and `SetValue` methods are used to set the `name` and `value` of the `SimpleProduct`, respectively. The `Build` method returns the final `SimpleProduct` object.
+For those who need to create a lot of different complex structs of the same type and have a chunk of it equal between them, this approach allows to develop builders of the same type, enabling them to set diferent default values for each builder, simplifying the work of building. 
 
-Here is an example of how to use the `SimpleBuilder` to create a `SimpleProduct`:
+Extending the last example, now we want to create a builder with default values so we don't need to specify when building the struct as follows:
 
 ```go
-product := builder.NewSimpleBuilder().
-    SetName("Product").
-    SetValue(100).
+product := builder.NewBuilder(builder.Default).
     Build()
 ```
 
-## Advanced Builder
-
-In a more complex scenario, we want to create two types of products: a default product and a custom product. We can achieve this by providing an input of `builderType` to the builder. The `DefaultBuilder` initializes the product with predefined values, while the `CustomBuilder` initializes the product with empty fields.
+Now we have a builder type as input to create the *Builder* so it retrieves the one we expect with the values already defined and, as the values are already defined we don't need to call the set functions. The following code represents an abstract example of how to implement the code that satisfies the upper code:
 
 ```go
 type Product struct {
@@ -137,16 +143,4 @@ func (b *CustomBuilder) Build() Product {
 }
 ```
 
-
-In this example, `DefaultBuilder` and `CustomBuilder` are structs that implement the `Builder` interface. The `NewBuilder` function is a factory function that returns a new instance of a builder based on the `BuilderType`. The `SetName` and `SetValue` methods are used to set the `name` and `value` of the `Product`, respectively. The `Build` method returns the final `Product` object.
-
-Here is an example of how to use the `Builder` to create a `Product`:
-
-```go
-product := builder.NewBuilder(builder.Custom).
-    SetName("Product").
-    SetValue(100).
-    Build()
-```
-
-The Builder pattern is a great way to handle complex object creation in a readable and maintainable way. It separates the construction of an object from its representation, allowing the same construction process to create different representations.
+The *Builder* pattern is easy to implement and has a huge benefit for the readers, certantly for simple structs it could be an overhead to use, but for complex ones is a piece of mind.  
